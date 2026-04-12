@@ -176,13 +176,9 @@ app.post('/api/auth/logout', (req, res) => {
 //   res.json(s ? { authenticated: true, userId: s.userId } : { authenticated: false });
 // });
 app.get('/api/auth/check', (req, res) => {
-    console.log('Hit /api/auth/check');
-    const token = req.cookies?.['session_token'] || req.headers['x-session-token'];
-    console.log('Token:', token);
-    const s = validateSession(token);
-    console.log('Session:', s);
-    res.json(s ? { authenticated: true, userId: s.userId } : { authenticated: false });
+    res.json({ ok: true });
 });
+
 
 app.get('/api/config/upload', (_req, res) => {
   const c = loadUploadConfig();
