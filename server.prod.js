@@ -111,6 +111,12 @@ function authMiddleware(req, res, next) {
 const app = express();
 const STATIC_DIR = path.resolve(__dirname, 'dist/file-share/browser');
 
+app.use((req, res, next) => {
+  const TEN_MIN = 20*60*1000;
+  req.setTimeout(TEN_MIN);
+  res.setTimeout(TEN_MIN);
+});
+
 // Security
 app.use(helmet({
   contentSecurityPolicy: {
