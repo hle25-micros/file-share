@@ -1,0 +1,15 @@
+services:
+  file-share:
+    build: .
+    container_name: file-share
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist uploaded files outside container
+      - ./uploads:/app/uploads
+      # Persist config (so you can change PIN without rebuild)
+      - ./config:/app/config
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped

@@ -1,0 +1,13 @@
+{
+  "pins": [
+    {
+      "id": "admin",
+      "pin": "741258",
+      "label": "Admin",
+      "active": true
+    }
+  ],
+  "maxAttempts": 5,
+  "lockoutMinutes": 15,
+  "sessionExpiryHours": 24
+}

@@ -1,0 +1,15 @@
+node_modules
+dist
+.angular
+.vscode
+uploads/*
+!uploads/.gitkeep
+*.md
+.git
+.gitignore
+.editorconfig
+tsconfig*.json
+server.dev.ts
+proxy.conf.json
+src/**/*.spec.ts
+karma.conf.js

@@ -1,0 +1,21 @@
+{
+  "maxFileSizeMB": 100,
+  "uploadDir": "./uploads",
+  "allowedExtensions": [
+    ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg",
+    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+    ".txt", ".csv", ".rtf", ".odt", ".ods", ".odp",
+    ".zip", ".rar", ".7z", ".tar", ".gz",
+    ".mp3", ".wav", ".ogg", ".flac",
+    ".mp4", ".avi", ".mkv", ".mov", ".wmv",
+    ".json", ".xml", ".html", ".css", ".js", ".ts",
+    ".apk", ".ipa"
+  ],
+  "blockedExtensions": [
+    ".exe", ".bat", ".cmd", ".com", ".msi", ".scr", ".pif",
+    ".vbs", ".vbe", ".js.exe", ".ws", ".wsf", ".wsc", ".wsh",
+    ".ps1", ".ps2", ".psc1", ".psc2", ".msh", ".msh1", ".msh2",
+    ".inf", ".reg", ".rgs", ".sct", ".shb", ".shs",
+    ".lnk", ".dll", ".sys", ".drv", ".cpl"
+  ]
+}

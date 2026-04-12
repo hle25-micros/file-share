@@ -1,0 +1,262 @@
+.upload-section {
+  h2 {
+    margin: 0;
+  }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.upload-info {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin: 0 0 1rem;
+}
+
+.drop-zone {
+  border: 2px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.drag-over {
+    border-color: #7c6fe0;
+    background: rgba(124, 111, 224, 0.08);
+  }
+
+  &.has-file {
+    border-style: solid;
+    border-color: rgba(124, 111, 224, 0.3);
+    background: rgba(124, 111, 224, 0.05);
+  }
+
+  &.uploading {
+    border-style: solid;
+    border-color: rgba(124, 111, 224, 0.3);
+  }
+}
+
+.drop-zone-content {
+  color: rgba(255, 255, 255, 0.4);
+
+  svg {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.drop-text {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 0.25rem;
+}
+
+.drop-subtext {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 0 0.75rem;
+}
+
+.btn-browse {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background: rgba(124, 111, 224, 0.15);
+  border: 1px solid rgba(124, 111, 224, 0.3);
+  border-radius: 8px;
+  color: #7c6fe0;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(124, 111, 224, 0.25);
+  }
+}
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+}
+
+.file-icon {
+  color: #7c6fe0;
+  flex-shrink: 0;
+}
+
+.file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 0.25rem;
+  word-break: break-all;
+}
+
+.file-size {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+  }
+}
+
+.uploading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-progress-circle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 3;
+  }
+
+  .circle-progress {
+    fill: none;
+    stroke: #7c6fe0;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.3s ease;
+  }
+
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+}
+
+.uploading-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.btn-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #7c6fe0, #6c5ce7);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: linear-gradient(135deg, #6c5ce7, #5f3dc4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(124, 111, 224, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.progress-bar-container {
+  margin-top: 1rem;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #7c6fe0, #6c5ce7);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-label {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+
+  &.success {
+    background: rgba(81, 207, 102, 0.1);
+    border: 1px solid rgba(81, 207, 102, 0.2);
+    color: #51cf66;
+  }
+
+  &.error {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+  }
+}
+
+@media (max-width: 480px) {
+  .drop-zone {
+    padding: 1.5rem 1rem;
+    min-height: 160px;
+  }
+}
