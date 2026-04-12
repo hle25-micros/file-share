@@ -1,5 +1,5 @@
 {
-  "maxFileSizeMB": 100,
+  "maxFileSizeMB": 500,
   "uploadDir": "./uploads",
   "allowedExtensions": [
     ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg",
