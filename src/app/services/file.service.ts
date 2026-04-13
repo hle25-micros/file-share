@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface FileInfo {
   id: string;
@@ -27,36 +28,80 @@ export interface UploadProgress {
 @Injectable({ providedIn: 'root' })
 export class FileService {
   private http = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
 
   getUploadConfig(): Observable<UploadConfig> {
     return this.http.get<UploadConfig>('/api/config/upload');
   }
 
+  /**
+   * Upload using raw XMLHttpRequest for real-time progress.
+   * Angular HttpClient buffers progress events in zoneless mode,
+   * so XHR gives much more reliable progress updates.
+   */
   uploadFile(file: File): Observable<UploadProgress> {
-    const formData = new FormData();
-    formData.append('file', file, file.name);
+    return new Observable<UploadProgress>(observer => {
+      if (!isPlatformBrowser(this.platformId)) {
+        observer.error({ error: 'Upload not supported on server' });
+        return;
+      }
 
-    const req = new HttpRequest('POST', '/api/files/upload', formData, {
-      reportProgress: true,
-    });
+      const formData = new FormData();
+      formData.append('file', file, file.name);
 
-    return this.http.request(req).pipe(
-      map(event => {
-        switch (event.type) {
-          case HttpEventType.UploadProgress:
-            const progress = event.total ? Math.round(100 * event.loaded / event.total) : 0;
-            return { status: 'progress' as const, progress };
-          case HttpEventType.Response:
-            const body = event.body as any;
-            if (body?.success) {
-              return { status: 'done' as const, progress: 100, file: body.file };
-            }
-            return { status: 'error' as const, progress: 0, error: body?.error || 'Upload failed' };
-          default:
-            return { status: 'progress' as const, progress: 0 };
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const progress = Math.round((e.loaded / e.total) * 100);
+          observer.next({ status: 'progress', progress });
         }
-      })
-    );
+      });
+
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const body = JSON.parse(xhr.responseText);
+            if (body.success) {
+              observer.next({ status: 'done', progress: 100, file: body.file });
+            } else {
+              observer.next({ status: 'error', progress: 0, error: body.error || 'Upload failed' });
+            }
+          } catch {
+            observer.next({ status: 'error', progress: 0, error: 'Invalid server response' });
+          }
+        } else {
+          try {
+            const body = JSON.parse(xhr.responseText);
+            observer.next({ status: 'error', progress: 0, error: body.error || `Upload failed (${xhr.status})` });
+          } catch {
+            observer.next({ status: 'error', progress: 0, error: `Upload failed (${xhr.status})` });
+          }
+        }
+        observer.complete();
+      });
+
+      xhr.addEventListener('error', () => {
+        observer.next({ status: 'error', progress: 0, error: 'Network error during upload' });
+        observer.complete();
+      });
+
+      xhr.addEventListener('abort', () => {
+        observer.next({ status: 'error', progress: 0, error: 'Upload cancelled' });
+        observer.complete();
+      });
+
+      xhr.open('POST', '/api/files/upload');
+      xhr.withCredentials = true; // Send cookies for auth
+      xhr.send(formData);
+
+      // Cleanup on unsubscribe
+      return () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+          xhr.abort();
+        }
+      };
+    });
   }
 
   getFiles(): Observable<FileInfo[]> {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileService, UploadConfig, UploadProgress } from '../../services/file.service';
 
@@ -13,6 +13,7 @@ export class UploadComponent implements OnInit {
   @Output() fileUploaded = new EventEmitter<void>();
 
   private fileService = inject(FileService);
+  private cdr = inject(ChangeDetectorRef);
 
   uploadConfig = signal<UploadConfig | null>(null);
   selectedFile = signal<File | null>(null);
@@ -105,6 +106,7 @@ export class UploadComponent implements OnInit {
       next: (event: UploadProgress) => {
         if (event.status === 'progress') {
           this.uploadProgress.set(event.progress);
+          this.cdr.detectChanges();
         } else if (event.status === 'done') {
           this.isUploading.set(false);
           this.uploadProgress.set(100);
@@ -114,12 +116,22 @@ export class UploadComponent implements OnInit {
             text: `"${event.file?.originalName}" uploaded successfully!`,
           });
           this.fileUploaded.emit();
+          this.cdr.detectChanges();
           // Clear success message after 5 seconds
           setTimeout(() => {
             if (this.message()?.type === 'success') {
               this.message.set(null);
+              this.cdr.detectChanges();
             }
           }, 5000);
+        } else if (event.status === 'error') {
+          this.isUploading.set(false);
+          this.uploadProgress.set(0);
+          this.message.set({
+            type: 'error',
+            text: event.error || 'Upload failed. Please try again.',
+          });
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
