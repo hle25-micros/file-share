@@ -118,24 +118,24 @@ app.use((req, res, next) => {
 });
 
 // Security
-// app.use(helmet({
-//   contentSecurityPolicy: {
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       styleSrc: ["'self'", "'unsafe-inline'"],
-//       scriptSrc: ["'self'", "'unsafe-inline'"],
-//       imgSrc: ["'self'", "data:", "blob:"],
-//       connectSrc: ["'self'"],
-//     },
-//   },
-//   crossOriginEmbedderPolicy: false,
-// }));
-// app.use(cookieParser());
-// app.use(express.json({ limit: '10mb' }));
-// app.use(express.urlencoded({limit: '10mb', extended: true}));
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(cookieParser());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({limit: '10mb', extended: true}));
 
-// // Trust proxy (for rate limiting behind reverse proxy)
-// app.set('trust proxy', 1);
+// Trust proxy (for rate limiting behind reverse proxy)
+app.set('trust proxy', 1);
 
 // Rate limiting
 app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, max: 200, message: { error: 'Too many requests.' } }));
@@ -268,7 +268,7 @@ app.get('*', (_req, res) => {
 
 // ─── Start Server ──────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-getUploadDir();
+//getUploadDir();
 app.listen(PORT, () => {
   console.log(`🚀 File Share running at http://localhost:${PORT}`);
   console.log(`📁 Upload directory: ${getUploadDir()}`);
