@@ -170,15 +170,11 @@ app.post('/api/auth/logout', (req, res) => {
   res.json({ success: true });
 });
 
-// app.get('/api/auth/check', (req, res) => {
-//   const token = req.cookies?.['session_token'] || req.headers['x-session-token'];
-//   const s = validateSession(token);
-//   res.json(s ? { authenticated: true, userId: s.userId } : { authenticated: false });
-// });
 app.get('/api/auth/check', (req, res) => {
-    res.json({ ok: true });
+  const token = req.cookies?.['session_token'] || req.headers['x-session-token'];
+  const s = validateSession(token);
+  res.json(s ? { authenticated: true, userId: s.userId } : { authenticated: false });
 });
-
 
 app.get('/api/config/upload', (_req, res) => {
   const c = loadUploadConfig();
